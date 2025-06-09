@@ -9,7 +9,7 @@ ws.use(express.json())
 ws.use(cors())
 
 var corsOptions = {
-    origin: 'http://localhost:5173'
+    origin: process.env.ENV_CORS_ORIGEM
 }
 
 ws.listen(process.env.ENV_API_PORT, () => {
