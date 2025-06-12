@@ -159,7 +159,7 @@ async function getForecast() {
 
         const dateBrasilia = moment(day.time)
           .tz('America/Sao_Paulo')  
-          .format('ddd - DD/MM/YYYY'); 
+          .format('DD/MM/YYYY'); 
 
         const timeBrasilia = moment(day.time)
           .tz('America/Sao_Paulo')  
