@@ -137,17 +137,17 @@ async function getForecast() {
 
     if(sun && precipitation){ 
       conditionIcon ='☀️'
-      condition = 'Ensolarado'
+      condition = 'Sol'
     }else if(!sun && precipitation){ 
       conditionIcon = '🌧️'
-      condition = 'Chovendo'
+      condition = 'Chuva'
     }else if(sun && !precipitation){
       conditionIcon = '⛅'
-      condition = 'Encoberto Nublado'
+      condition = 'Parcialmente Nublado'
     } 
     else if(!sun && !precipitation){ 
       conditionIcon = '☁️'
-      condition = 'Encoberto'
+      condition = 'Nublado'
     }
 
     const week = await getWeekForecast()
@@ -159,7 +159,7 @@ async function getForecast() {
 
         const dateBrasilia = moment(day.time)
           .tz('America/Sao_Paulo')  
-          .format('DD/MM/YYYY'); 
+          .format('ddd - DD/MM/YYYY'); 
 
         const timeBrasilia = moment(day.time)
           .tz('America/Sao_Paulo')  
