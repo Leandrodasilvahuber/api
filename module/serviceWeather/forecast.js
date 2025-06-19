@@ -101,14 +101,23 @@ const formatWeekForecast = async (week) => {
       .tz('America/Sao_Paulo')  
       .format('HH:mm:ss')
 
+    moment.locale('pt-br');
+    const weekDay = moment(day.time)
+      .tz('America/Sao_Paulo')  
+      .format('ddd')
+
     if(currentDay !== dateBrasilia){
       currentDay = dateBrasilia
       color = color === 'green'? 'yellow': 'green'
     }
 
+    const sun = day.cloudCover > 30? false: true
+    const precipitation = day.precipitation.noaa > 0.5? true: false
+
     const partial = {
       date: dateBrasilia,
       time: timeBrasilia,
+      weekDay: weekDay,
       currentTemp: day.airTemperature.noaa.toFixed(0),
       waveDirection: findDirection(day.waveDirection.noaa).nome,
       waveDirectionIcon: findDirection(day.waveDirection.noaa).emoji,
@@ -116,7 +125,8 @@ const formatWeekForecast = async (week) => {
       windDirection: findDirection(day.windDirection.noaa).nome,
       windDirectionIcon: findDirection(day.windDirection.noaa).emoji,
       windSpeed: day.windSpeed.noaa.toFixed(1),
-      color: color
+      color: color,
+      condicao: formatConditionForecast(sun, precipitation)
     }
 
     return partial

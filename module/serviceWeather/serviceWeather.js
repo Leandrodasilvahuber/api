@@ -12,6 +12,7 @@ const getForecast = async () => {
     const precipitation = today.precipitation
     const condition = formatConditionForecast(sun, precipitation)
     const week = await getWeekForecast()
+
     const weekFormatted = await formatWeekForecast(week)
 
     return  {
