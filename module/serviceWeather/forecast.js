@@ -117,7 +117,7 @@ const formatWeekForecast = async (week) => {
     const partial = {
       date: dateBrasilia,
       time: timeBrasilia,
-      weekDay: weekDay,
+      weekDay: weekDay.toUpperCase(),
       currentTemp: day.airTemperature.noaa.toFixed(0),
       waveDirection: findDirection(day.waveDirection.noaa).nome,
       waveDirectionIcon: findDirection(day.waveDirection.noaa).emoji,
