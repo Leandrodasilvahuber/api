@@ -1,6 +1,6 @@
 import { MongoClient, ServerApiVersion } from 'mongodb';
 
-async function getClient(){
+const getClient = async () => {
 
     const uri = process.env.URI_MONGO
 
