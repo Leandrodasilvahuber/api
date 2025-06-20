@@ -1,21 +1,9 @@
-import { 
-  getWeekForecast, 
-  getTodayForecast, 
-  formatConditionForecast, 
-  formatWeekForecast
-} from "./forecast.js"
+import { getWeekForecast, getTodayForecast } from "./module.js";
 
 const getForecast = async () => {
+    const today = await getTodayForecast();
 
-    const today = await getTodayForecast()
-    const sun = today.cloudCover
-    const precipitation = today.precipitation
-    const condition = formatConditionForecast(sun, precipitation)
-    const week = await getWeekForecast()
-
-    const weekFormatted = await formatWeekForecast(week)
-
-    return  {
+    return {
         currentTemp: today.airTemperature,
         condition: condition.text,
         conditionIcon: condition.icon,
@@ -25,8 +13,8 @@ const getForecast = async () => {
         windSpeed: today.windSpeed,
         windDirection: today.windDirection.nome,
         windDirectionIcon: today.windDirection.emoji,
-        forecast: weekFormatted
-    }
-}
+        forecast: await getWeekForecast(),
+    };
+};
 
-export default { getForecast }
+export default { getForecast };

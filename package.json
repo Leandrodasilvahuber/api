@@ -18,5 +18,11 @@
     "moment-timezone": "^0.5.45",
     "mongodb": "^6.16.0",
     "mysql2": "^3.11.3"
-  }
+  },
+  
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
+  
 }
