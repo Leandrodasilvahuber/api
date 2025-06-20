@@ -114,7 +114,7 @@ const formatWeekForecast = async (week) => {
     const sun = day.cloudCover > 30? false: true
     const precipitation = day.precipitation.noaa > 0.5? true: false
 
-    const partial = {
+    return {
       date: dateBrasilia,
       time: timeBrasilia,
       weekDay: weekDay.toUpperCase(),
@@ -129,13 +129,12 @@ const formatWeekForecast = async (week) => {
       condicao: formatConditionForecast(sun, precipitation)
     }
 
-    return partial
   })
 
   return weekFormatted
 }
 
-const findDirection = async (degree) => {
+const findDirection = (degree) => {
   
   const directions = {
     n:  { emoji: '⬇️', start: 337.5, end: 22.5,  nome: 'Norte'     },
