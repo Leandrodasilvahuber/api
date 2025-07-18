@@ -11,7 +11,9 @@ const getClient = async () => {
         },
     });
 
-    return client.connect();
+    await client.connect();
+
+    return client.db(process.env.DB_MONGO).collection(process.env.TABLE_MONGO);
 };
 
 export default { getClient };

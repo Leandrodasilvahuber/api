@@ -5,8 +5,8 @@ const getForecast = async () => {
 
     return {
         currentTemp: today.airTemperature,
-        condition: condition.text,
-        conditionIcon: condition.icon,
+        condition: today.condition.text,
+        conditionIcon: today.condition.icon,
         waveHeight: today.waveHeight,
         waveDirection: today.waveDirection.nome,
         waveDirectionIcon: today.waveDirection.emoji,

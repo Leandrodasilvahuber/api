@@ -1,16 +1,10 @@
 import { serviceDB, moment } from "../../config.js";
 
-const getForecast = () => {
-    const client = serviceDB.getClient();
-    const database = client.db(process.env.DB_MONGO);
-    return database.collection(process.env.TABLE_MONGO);
-};
-
 const getWeekForecast = async () => {
-    const forecast = getForecast();
+    let client = await serviceDB.getClient();
     const now = moment.utc().toDate();
 
-    const result = await forecast
+    const result = await client
         .aggregate([
             {
                 $addFields: {
@@ -28,16 +22,16 @@ const getWeekForecast = async () => {
         ])
         .toArray();
 
-    client.close();
+    client = null;
 
     return await formatWeekForecast(result);
 };
 
 const getTodayForecast = async () => {
-    const forecast = getForecast();
+    let client = await serviceDB.getClient();
     const now = moment.utc();
 
-    const result = await forecast
+    const result = await client
         .aggregate([
             {
                 $addFields: {
@@ -56,6 +50,8 @@ const getTodayForecast = async () => {
             },
         ])
         .toArray();
+
+    client = null;
 
     let today = result.shift();
 
@@ -77,10 +73,9 @@ const getTodayForecast = async () => {
 
 const getConditions = () => {
     return {
-        sunnyRainy: { icon: "☀️", text: "Sol" },
-        cloudyRainy: { icon: "🌧️", text: "Chuva" },
-        sunnyClear: { icon: "⛅", text: "Parcialmente Nublado" },
-        cloudyClear: { icon: "☁️", text: "Nublado" },
+        rainy: { icon: "🌧️", text: "Chuva" },
+        cloudy: { icon: "⛅", text: "Parcialmente Nublado" },
+        sunny: { icon: "☀️", text: "Sol" },
         undefined: { icon: "❓", text: "Sem Previsão" },
     };
 };
@@ -90,13 +85,13 @@ const formatConditionForecast = (sun, precipitation) => {
 
     switch (true) {
         case sun && precipitation:
-            return conditions.sunnyRainy;
+            return conditions.rainy;
         case !sun && precipitation:
-            return conditions.cloudyRainy;
+            return conditions.rainy;
         case sun && !precipitation:
-            return conditions.sunnyClear;
+            return conditions.sunny;
         case !sun && !precipitation:
-            return conditions.cloudyClear;
+            return conditions.cloudy;
         default:
             return conditions.undefined;
     }
