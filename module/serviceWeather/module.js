@@ -55,8 +55,8 @@ const getTodayForecast = async () => {
 
     let today = result.shift();
 
-    const cloudCoverBoolean = today.cloudCover > 30 ? false : true;
-    const precipitationBoolean = today.precipitation.noaa > 0.5 ? true : false;
+    const cloudCoverBoolean = today.cloudCover > 10 ? true : false;
+    const precipitationBoolean = today.precipitation.noaa > 0 ? true : false;
 
     return {
         waveDirection: findDirection(today.waveDirection.noaa),
