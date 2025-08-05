@@ -54,8 +54,6 @@ const getTodayForecast = async () => {
     client = null;
 
     let today = result.shift();
-    const cloudCoverBoolean = today.cloudCover > 10 ? true : false;
-    const precipitationBoolean = today.precipitation.noaa > 0 ? true : false;
 
     return {
         waveDirection: findDirection(today.waveDirection.noaa),
@@ -63,14 +61,11 @@ const getTodayForecast = async () => {
         airTemperature: today.airTemperature.noaa.toFixed(0),
         waveHeight: today.waveHeight.noaa.toFixed(1),
         windSpeed: today.windSpeed.noaa.toFixed(1),
-        condition: formatConditionForecast(
-            cloudCoverBoolean,
-            precipitationBoolean
-        ),
+        condition: formatlabelsAndIconsForecast(today),
     };
 };
 
-const getConditions = () => {
+const getLabelsAndIcons = () => {
     return {
         rainy: { icon: "🌧️", text: "Chuva" },
         cloudy: { icon: "⛅", text: "Parcialmente Nublado" },
@@ -79,20 +74,22 @@ const getConditions = () => {
     };
 };
 
-const formatConditionForecast = (cloudCoverBoolean, precipitationBoolean) => {
-    const conditions = getConditions();
+const formatlabelsAndIconsForecast = (partial) => {
+    const cloudCoverBoolean = partial.cloudCover > 10 ? true : false;
+    const precipitationBoolean = partial.precipitation.noaa > 0 ? true : false;
+    const labelsAndIcons = getLabelsAndIcons();
 
     switch (true) {
         case cloudCoverBoolean && precipitationBoolean:
-            return conditions.rainy;
+            return labelsAndIcons.rainy;
         case !cloudCoverBoolean && precipitationBoolean:
-            return conditions.rainy;
+            return labelsAndIcons.rainy;
         case cloudCoverBoolean && !precipitationBoolean:
-            return conditions.sunny;
+            return labelsAndIcons.sunny;
         case !cloudCoverBoolean && !precipitationBoolean:
-            return conditions.cloudy;
+            return labelsAndIcons.cloudy;
         default:
-            return conditions.undefined;
+            return labelsAndIcons.undefined;
     }
 };
 
@@ -111,9 +108,6 @@ const formatWeekForecast = (week) => {
             color = color === "green" ? "yellow" : "green";
         }
 
-        const cloudCoverBoolean = day.cloudCover > 10 ? true : false;
-        const precipitationBoolean = day.precipitation.noaa > 0 ? true : false;
-
         return {
             date: dateBrasilia,
             time: timeBrasilia,
@@ -126,10 +120,7 @@ const formatWeekForecast = (week) => {
             windDirectionIcon: findDirection(day.windDirection.noaa).emoji,
             windSpeed: day.windSpeed.noaa.toFixed(1),
             color: color,
-            condicao: formatConditionForecast(
-                cloudCoverBoolean,
-                precipitationBoolean
-            ),
+            condicao: formatlabelsAndIconsForecast(day),
         };
     });
 
