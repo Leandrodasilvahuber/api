@@ -65,19 +65,33 @@ const getTodayForecast = async () => {
     };
 };
 
-const getLabelsAndIcons = () => {
-    return {
-        rainy: { icon: "🌧️", text: "Chuva" },
-        cloudy: { icon: "⛅", text: "Parcialmente Nublado" },
-        sunny: { icon: "☀️", text: "Sol" },
-        undefined: { icon: "❓", text: "Sem Previsão" },
-    };
+const getLabelsAndIcons = (horaUTC) => {
+    let partial;
+
+    if (horaUTC >= 6 && horaUTC < 18) {
+        partial = {
+            rainy: { icon: "🌧️", text: "Chuva" },
+            cloudy: { icon: "⛅", text: "Parcialmente Nublado" },
+            sunny: { icon: "☀️", text: "Sol" },
+            undefined: { icon: "❓", text: "Sem Previsão" },
+        };
+    } else {
+        partial = {
+            rainy: { icon: "🌧️", text: "Chuva" },
+            cloudy: { icon: "☁️", text: "Parcialmente Nublado" },
+            sunny: { icon: "🌙", text: "Limpo" },
+            undefined: { icon: "❓", text: "Sem Previsão" },
+        };
+    }
+
+    return partial;
 };
 
 const formatlabelsAndIconsForecast = (partial) => {
     const cloudCoverBoolean = partial.cloudCover > 10 ? true : false;
     const precipitationBoolean = partial.precipitation.noaa > 0 ? true : false;
-    const labelsAndIcons = getLabelsAndIcons();
+    const horaUTC = moment.utc(partial.parsedTime).hour();
+    const labelsAndIcons = getLabelsAndIcons(horaUTC);
 
     switch (true) {
         case cloudCoverBoolean && precipitationBoolean:
